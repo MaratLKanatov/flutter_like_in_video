@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_like_in_video/screens/add_flight_form.dart';
 import 'package:flutter_like_in_video/screens/schedules.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,13 +14,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var container;
+    Widget container;
+    String appbarTitle = "";
+    Widget? floatingBtn;
 
     switch (currentPage) {
       case drawerSections.schedule:
-        container = ScheduleScreen();
+        container = const ScheduleScreen();
+        appbarTitle = "Расписание";
+        floatingBtn = Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: ElevatedButton(
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 70.0, vertical: 15.0),
+              child: Text(
+                "Добавить рейс",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddFlightForm()),
+              );
+            },
+          ),
+        );
         break;
       default:
+        appbarTitle = "Продажа билетов";
         container = Container(
           alignment: Alignment.center,
           color: Colors.white,
@@ -33,53 +59,50 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Application"),
-        centerTitle: true,
+        title: Text(appbarTitle),
         backgroundColor: Colors.green[600],
       ),
+      floatingActionButton: floatingBtn,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       body: container,
       drawer: Drawer(
         child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                DrawerHeader(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Test company",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                        ),
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Text(
-                              "Aty Zhoni",
-                              style: TextStyle(
-                                color: Colors.grey[850],
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+          child: Column(
+            children: [
+              DrawerHeader(
+                child: Column(
+                  children: [
+                    const Text(
+                      "Test company",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 30,
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Text(
+                          "Aty Zhoni",
+                          style: TextStyle(
+                            color: Colors.grey[850],
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                drawerList(),
-              ],
-            ),
+              ),
+              drawerList(),
+            ],
           ),
         ),
       ),
@@ -87,17 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget drawerList() {
-    List<String> drawerListTitles = [
-      "Продажа билетов",
-      "Список администраторов",
-      "Автобусы",
-      "Статистика",
-      "Пассажиры",
-      "Расписание",
-      "История",
-      "Настройки"
-    ];
-
     return Container(
       padding: const EdgeInsets.only(
         top: 15.0,
